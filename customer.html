@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MOMENTÉ 客户下单</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#fff8f3;
+max-width:600px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#5a4033;
+}
+
+input,select,textarea{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:1px solid #ddd;
+border-radius:10px;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#25D366;
+color:white;
+border:none;
+border-radius:10px;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>🍡 MOMENTÉ</h1>
+
+<h3>客户下单</h3>
+
+<input id="name" placeholder="姓名">
+
+<input id="phone" placeholder="电话">
+
+<input id="date" type="date">
+
+<select id="type">
+<option>自选礼盒</option>
+<option>九宫格套餐</option>
+</select>
+
+<textarea id="remark" placeholder="口味 / 数量 / 备注"></textarea>
+
+<button onclick="sendWA()">
+📱 WhatsApp 下单
+</button>
+
+</div>
+
+<script>
+
+function sendWA(){
+
+let name=document.getElementById("name").value;
+let phone=document.getElementById("phone").value;
+let date=document.getElementById("date").value;
+let type=document.getElementById("type").value;
+let remark=document.getElementById("remark").value;
+
+let text=
+`Hi MOMENTÉ
+
+我要下单
+
+姓名: ${name}
+
+电话: ${phone}
+
+取货日期: ${date}
+
+订单类型: ${type}
+
+备注:
+${remark}`;
+
+window.open(
+"https://wa.me/60125271383?text="+encodeURIComponent(text)
+);
+
+}
+
+</script>
+
+</body>
+</html>
