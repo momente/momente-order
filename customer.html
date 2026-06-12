@@ -1,114 +1,285 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="zh-Hans">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MOMENTÉ 客户下单</title>
-
 <style>
-body{
-font-family:Arial,sans-serif;
-background:#fff8f3;
-max-width:600px;
-margin:auto;
-padding:20px;
+:root{
+  --bg:#fff8f3;--card:#fff;--ink:#3a2a22;--muted:#8b7465;
+  --gold:#c7a27c;--line:#eadccd;--brown:#5a4033;--green:#25D366;
 }
-
-.card{
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 2px 8px rgba(0,0,0,.1);
-}
-
-h1{
-text-align:center;
-color:#5a4033;
-}
-
-input,select,textarea{
-width:100%;
-padding:12px;
-margin:8px 0;
-border:1px solid #ddd;
-border-radius:10px;
-}
-
-button{
-width:100%;
-padding:15px;
-background:#25D366;
-color:white;
-border:none;
-border-radius:10px;
-font-size:18px;
-font-weight:bold;
-cursor:pointer;
-}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink)}
+.page{max-width:720px;margin:0 auto;padding:18px}
+.header{text-align:center;background:#fff;border:1px solid var(--line);border-radius:24px;padding:22px 16px;margin-bottom:14px}
+.logo{font-size:34px;font-weight:900;letter-spacing:1px;color:var(--brown)}
+.sub{color:var(--muted);margin-top:6px;font-size:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px;margin-bottom:14px}
+h2{font-size:18px;margin:0 0 12px;color:var(--brown)}
+label{display:block;font-size:13px;color:var(--muted);margin:10px 0 5px}
+input,select,textarea{width:100%;border:1px solid var(--line);background:#fffdfb;border-radius:14px;padding:12px;font-size:16px;outline:none}
+textarea{min-height:70px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice button{border:1px solid var(--line);background:#fff;color:var(--brown);border-radius:16px;padding:14px;font-size:16px;font-weight:900}
+.choice button.active{background:var(--brown);color:#fff}
+.box{background:#fffdfb;border:1px solid var(--line);border-radius:18px;padding:14px;margin:10px 0}
+.boxHead{display:flex;justify-content:space-between;align-items:center;font-weight:900;color:var(--brown);margin-bottom:8px}
+.flavorGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.addBtn,.waBtn{width:100%;border:0;border-radius:16px;padding:14px;font-size:17px;font-weight:900;cursor:pointer}
+.addBtn{background:var(--gold);color:#2d211b;margin-top:10px}
+.waBtn{background:var(--green);color:#fff;margin-top:10px;font-size:19px}
+.qty{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0}
+.qty button{width:42px;height:42px;border:0;border-radius:50%;background:var(--brown);color:#fff;font-size:22px;font-weight:900}
+.qty span{font-size:24px;font-weight:900;color:var(--brown);min-width:36px;text-align:center}
+.packageList{background:#fffdfb;border:1px dashed var(--gold);border-radius:16px;padding:12px;line-height:1.8;font-weight:800}
+.total{background:#fffdfb;border:1px solid var(--line);border-radius:16px;padding:12px;font-weight:900;color:var(--brown);text-align:center;margin-top:10px}
+.pay{line-height:1.8;background:#fffdfb;border:1px dashed var(--gold);border-radius:16px;padding:12px;font-weight:800}
+.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:8px}
+.hidden{display:none}
+.err{display:none;background:#fff0f0;border:1px solid #efb8b8;color:#a33;border-radius:14px;padding:10px;margin:10px 0;font-weight:800}
+@media(max-width:520px){.grid2,.choice,.flavorGrid{grid-template-columns:1fr}}
 </style>
-
 </head>
-
 <body>
+<div class="page">
+  <div class="header">
+    <div class="logo">MOMENTÉ</div>
+    <div class="sub">Handmade Mochi Dessert · 当天制作 · 限量供应</div>
+  </div>
 
-<div class="card">
+  <div class="card">
+    <h2>👤 客户资料</h2>
+    <label>姓名</label>
+    <input id="name" placeholder="请输入姓名">
+    <label>电话</label>
+    <input id="phone" placeholder="例如 0123456789">
+    <div class="grid2">
+      <div>
+        <label>取货日期</label>
+        <input id="date" type="date">
+      </div>
+      <div>
+        <label>取货时间</label>
+        <select id="time">
+          <option value="">请选择时间</option>
+          <option>10am - 12pm</option>
+          <option>12pm - 2pm</option>
+          <option>2pm - 4pm</option>
+          <option>4pm - 6pm</option>
+        </select>
+      </div>
+    </div>
+  </div>
 
-<h1>🍡 MOMENTÉ</h1>
+  <div class="card">
+    <h2>🎁 订单类型</h2>
+    <div class="choice">
+      <button id="btnCustom" class="active" onclick="setMode('custom')">自选礼盒</button>
+      <button id="btnPackage" onclick="setMode('package')">端午九宫格礼盒</button>
+    </div>
 
-<h3>客户下单</h3>
+    <div id="customArea">
+      <div id="boxes"></div>
+      <button class="addBtn" onclick="addBox()">➕ 新增一盒</button>
+    </div>
 
-<input id="name" placeholder="姓名">
+    <div id="packageArea" class="hidden">
+      <div class="packageList">
+        端午九宫格礼盒 RM128 / 盒<br>
+        1. 芒果<br>
+        2. 草莓<br>
+        3. Oreo<br>
+        4. Oreo海盐<br>
+        5. 抹茶Oreo<br>
+        6. 巧克力可可脆脆珠<br>
+        7. 芋泥啵啵<br>
+        8. 巧克力生巧<br>
+        9. 抹茶生巧
+      </div>
+      <div class="qty">
+        <button onclick="changePkg(-1)">−</button>
+        <span id="pkgQty">1</span>
+        <button onclick="changePkg(1)">+</button>
+      </div>
+    </div>
 
-<input id="phone" placeholder="电话">
+    <div class="total" id="totalBox">总计：请确认订单</div>
+  </div>
 
-<input id="date" type="date">
+  <div class="card">
+    <h2>💳 付款方式</h2>
+    <div class="pay">
+      Public Bank<br>
+      CHEN MEE CHAN<br>
+      4185636209
+    </div>
+    <label>上传付款截图</label>
+    <input id="receipt" type="file" accept="image/*">
+    <div class="note">注意：WhatsApp 不会自动附上截图。请按下 WhatsApp 下单后，再把付款截图发送给 MOMENTÉ。</div>
+  </div>
 
-<select id="type">
-<option>自选礼盒</option>
-<option>九宫格套餐</option>
-</select>
-
-<textarea id="remark" placeholder="口味 / 数量 / 备注"></textarea>
-
-<button onclick="sendWA()">
-📱 WhatsApp 下单
-</button>
-
+  <div class="card">
+    <h2>📝 备注</h2>
+    <textarea id="remark" placeholder="例如：不要太甜 / 生日用 / 其他备注"></textarea>
+    <div id="err" class="err"></div>
+    <button class="waBtn" onclick="sendWA()">📱 WhatsApp 下单</button>
+  </div>
 </div>
 
 <script>
+const WA_NUMBER = "60125271383";
+const PACKAGE_PRICE = 128;
+const flavors = ["芒果","草莓","Oreo","Oreo海盐","抹茶Oreo","巧克力可可脆脆珠","芋泥啵啵","巧克力生巧","抹茶生巧"];
+let mode = "custom";
+let boxCount = 0;
+let pkgQty = 1;
+
+function flavorSelect(id){
+  return `<select id="${id}">
+    <option value="">请选择口味</option>
+    ${flavors.map(f=>`<option>${f}</option>`).join("")}
+  </select>`;
+}
+
+function addBox(){
+  boxCount++;
+  const div = document.createElement("div");
+  div.className = "box";
+  div.id = "box" + boxCount;
+  div.innerHTML = `
+    <div class="boxHead">
+      <span>第 ${boxCount} 盒 · 4粒</span>
+      ${boxCount>1 ? `<button onclick="removeBox(${boxCount})" style="border:0;background:#c85b5b;color:white;border-radius:10px;padding:7px 10px;font-weight:900">删除</button>` : ``}
+    </div>
+    <div class="flavorGrid">
+      <div><label>第1粒</label>${flavorSelect(`b${boxCount}_1`)}</div>
+      <div><label>第2粒</label>${flavorSelect(`b${boxCount}_2`)}</div>
+      <div><label>第3粒</label>${flavorSelect(`b${boxCount}_3`)}</div>
+      <div><label>第4粒</label>${flavorSelect(`b${boxCount}_4`)}</div>
+    </div>
+  `;
+  document.getElementById("boxes").appendChild(div);
+  updateTotal();
+}
+
+function removeBox(n){
+  const el = document.getElementById("box"+n);
+  if(el) el.remove();
+  updateTotal();
+}
+
+function setMode(m){
+  mode = m;
+  document.getElementById("btnCustom").classList.toggle("active", m==="custom");
+  document.getElementById("btnPackage").classList.toggle("active", m==="package");
+  document.getElementById("customArea").classList.toggle("hidden", m!=="custom");
+  document.getElementById("packageArea").classList.toggle("hidden", m!=="package");
+  updateTotal();
+}
+
+function changePkg(delta){
+  pkgQty = Math.max(1, pkgQty + delta);
+  document.getElementById("pkgQty").textContent = pkgQty;
+  updateTotal();
+}
+
+function getVisibleBoxes(){
+  return [...document.querySelectorAll("#boxes .box")];
+}
+
+function updateTotal(){
+  if(mode==="package"){
+    document.getElementById("totalBox").textContent = `总计：${pkgQty}盒 × RM128 = RM${pkgQty*PACKAGE_PRICE}`;
+  }else{
+    document.getElementById("totalBox").textContent = `自选礼盒：${getVisibleBoxes().length}盒`;
+  }
+}
+
+function showErr(msg){
+  const e = document.getElementById("err");
+  e.style.display = "block";
+  e.textContent = msg;
+}
 
 function sendWA(){
+  document.getElementById("err").style.display = "none";
 
-let name=document.getElementById("name").value;
-let phone=document.getElementById("phone").value;
-let date=document.getElementById("date").value;
-let type=document.getElementById("type").value;
-let remark=document.getElementById("remark").value;
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+  const remark = document.getElementById("remark").value.trim();
+  const receipt = document.getElementById("receipt").files.length ? "已选择付款截图（会另外发送）" : "未上传";
 
-let text=
+  if(!name) return showErr("请填写姓名");
+  if(!phone) return showErr("请填写电话");
+  if(!date) return showErr("请选择取货日期");
+  if(!time) return showErr("请选择取货时间");
+
+  let orderText = "";
+  let totalText = "";
+
+  if(mode==="package"){
+    orderText =
+`订单类型：端午九宫格礼盒
+数量：${pkgQty}盒
+固定口味：
+1. 芒果
+2. 草莓
+3. Oreo
+4. Oreo海盐
+5. 抹茶Oreo
+6. 巧克力可可脆脆珠
+7. 芋泥啵啵
+8. 巧克力生巧
+9. 抹茶生巧`;
+    totalText = `总额：RM${pkgQty*PACKAGE_PRICE}`;
+  }else{
+    const boxes = getVisibleBoxes();
+    if(boxes.length===0) return showErr("请至少选择一盒自选礼盒");
+
+    let lines = [];
+    for(const box of boxes){
+      const n = box.id.replace("box","");
+      let selected = [];
+      for(let i=1;i<=4;i++){
+        const v = document.getElementById(`b${n}_${i}`)?.value || "";
+        if(!v) return showErr(`请完成第 ${n} 盒第 ${i} 粒口味`);
+        selected.push(`${i}. ${v}`);
+      }
+      lines.push(`第${n}盒：\n${selected.join("\n")}`);
+    }
+    orderText = `订单类型：自选礼盒\n${lines.join("\n\n")}`;
+    totalText = `自选礼盒：${boxes.length}盒`;
+  }
+
+  const msg =
 `Hi MOMENTÉ
 
 我要下单
 
-姓名: ${name}
+姓名：${name}
+电话：${phone}
+取货日期：${date}
+取货时间：${time}
 
-电话: ${phone}
+${orderText}
 
-取货日期: ${date}
+${totalText}
 
-订单类型: ${type}
+付款截图：${receipt}
 
-备注:
-${remark}`;
+备注：
+${remark || "-"}
 
-window.open(
-"https://wa.me/60125271383?text="+encodeURIComponent(text)
-);
+谢谢`;
 
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
+addBox();
 </script>
-
 </body>
 </html>
